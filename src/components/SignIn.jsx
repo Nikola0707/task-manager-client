@@ -3,9 +3,9 @@ import { RiLockPasswordFill } from "react-icons/ri";
 
 import avatar from "../assets/user-avatar.png";
 
-const SignIn = () => {
+const SignIn = (isHide) => {
   return (
-    <div className="signIn-container">
+    <div className="signIn-container" style={{display:isHide}}>
         <div className="avatar-container">
             <img src={avatar} alt="avatar" />
         </div>

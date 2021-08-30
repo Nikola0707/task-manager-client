@@ -1,16 +1,16 @@
+import { useState } from 'react';
 import Footer from './components/Footer'
 import SignIn from './components/SignIn'
 import "./App.css";
 
 function App() {
+  const [showSignIn, setShowSingIn] = useState(false)
+  const [showSignUp, setShowSingUp] = useState(false)
   return (
     <div className="container">
-      {/* <header>
-        <div>Logo</div>
-        <div>
-          <button>SIGN IN</button>
+      <div className="sign-in-modal" style={{display:showSignIn}}>
+            {showSignIn ? <SignIn /> : ''}
         </div>
-      </header> */}
       <section>
         <div><h1>TASK MANAGEMENT AND TODO LIST</h1></div>
         <div>
@@ -19,16 +19,14 @@ function App() {
           </p>
         </div>
         <div className="button-div">
-          <button className="sign-in-btn">SIGN IN</button>
+          <button className="sign-in-btn" onClick={()=> setShowSingIn(!showSignIn)}>SIGN IN</button>
           <button className="sign-up-btn">SIGN UP</button>
         </div>
       </section>
       <footer>
         <Footer />
       </footer>
-      <div className="sign-in-modal">
-            <SignIn />
-        </div>
+
     </div>
   );
 }

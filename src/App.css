@@ -84,13 +84,18 @@ section p {
 }
 
 /* Sign In Modal */
+.sign-in-modal{
+    position: absolute;
+    top: 20%;
+    left: 42%;
+}
 .signIn-container{
     width: 400px;
     height: 500px;
     margin: 0 auto;
     border-radius: 2rem;
     background: #fff;
-    box-shadow: 0 30px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 0 20px rgba(214, 72, 72, 0.9);
     text-align: center;
     padding-top: 3rem;
 }
