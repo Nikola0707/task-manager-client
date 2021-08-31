@@ -1,13 +1,12 @@
-body{
+
+.home-container{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
     background-image: url('../src/assets/background-image.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-}
-.container{
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
 }
 header{
     display: flex;
@@ -83,13 +82,18 @@ section p {
     font-size: 0.5rem;
 }
 
-/* Sign In Modal */
-.sign-in-modal{
+/* Sign In and Sign Up Modal */
+.sign-in-modal,
+.sign-up-modal{
     position: absolute;
     top: 20%;
     left: 42%;
 }
-.signIn-container{
+.sign-up-modal{
+    top: 10%;
+}
+.signIn-container,
+.signUp-container{
     width: 400px;
     height: 500px;
     margin: 0 auto;
@@ -97,7 +101,10 @@ section p {
     background: #fff;
     box-shadow: 0 0 20px rgba(214, 72, 72, 0.9);
     text-align: center;
-    padding-top: 3rem;
+    padding: 0.5rem 0 3rem 0;
+}
+.signUp-container{
+    height: 600px;
 }
 
 .avatar-container{
@@ -108,16 +115,19 @@ section p {
     background: #ff4f5a;
     border-radius: 100%;
 }
-.signIn-container h1{
+.signIn-container h1,
+.signUp-container h1{
     color: #385a64;
 }
 form{
     width: 90%;
     margin: 0 auto;
 }
-input[type="email"]{
+input[type="email"],
+input[type="text"]{
     margin-bottom: 1.5rem;
 }
+input[type="text"],
 input[type="email"],
 input[type="password"]{
     width: 90%;
@@ -131,7 +141,7 @@ input[type="password"]{
     padding-left: 1rem;
     box-sizing: border-box;
 }
-
+input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus{
     border-bottom: 2px solid #ff4f5a;
@@ -150,4 +160,41 @@ input[type="submit"]{
     font-weight: bold;
     font-size: 1.2rem;
     cursor: pointer;
+}
+
+/* USER PAGE */
+.user-page-container{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-image: url('../src/assets/userPage.jpg');
+    background-position: -350px 40px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.user-page-container form{
+    width: 100%;
+}
+.content{
+    flex-grow: 1;
+    width: 40vw;
+    margin-left: auto;
+}
+.todo-container{
+    display: flex;
+    width: 90%;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    height: 60px;
+    color: #262626;
+    border-bottom: 2px solid #F0A350;
+    background: transparent;
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+.edit-delete-icons{
+    margin-left: auto;
+    display: flex;
+    align-items: center;
 }
