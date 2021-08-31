@@ -28,7 +28,7 @@ const SignIn = ({ isVisible }) => {
               style={{ color: "#385a64", fontSize: "20px" }}
             />
           </span>
-          <input type="email" placeholder="Password" />
+          <input type="password" placeholder="Password" />
         </div>
         <input type="submit" value="Log In" />
       </form>
