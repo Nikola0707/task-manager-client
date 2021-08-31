@@ -1,10 +1,30 @@
+import {useState} from 'react'
+
 import { MdEmail } from "react-icons/md";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { RiLockPasswordFill } from "react-icons/ri";
 
 import avatar from "../assets/user-avatar.png";
 
+const axios = require('axios')
+
 const SignIn = ({ isVisible }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // SIGN IN
+  const signIn = (e) => {
+    e.preventDefault()
+    axios.post('https://nikola-task-manager-app.herokuapp.com/users/login',{
+      email,
+      password
+    }).then(response => {
+      console.log(response)
+      setEmail('')
+      setPassword('')
+    }).catch(e => console.log(e))
+  }
+
   return (
     <div className="signIn-container">
       <div className="close-signIn-model" style={{textAlign:"right"}}>
@@ -19,7 +39,7 @@ const SignIn = ({ isVisible }) => {
           <span>
             <MdEmail style={{ color: "#385a64", fontSize: "20px" }} />
           </span>
-          <input type="email" placeholder="Email" />
+          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
         </div>
 
         <div className="inputBox">
@@ -28,9 +48,9 @@ const SignIn = ({ isVisible }) => {
               style={{ color: "#385a64", fontSize: "20px" }}
             />
           </span>
-          <input type="password" placeholder="Password" />
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
         </div>
-        <input type="submit" value="Log In" />
+        <input type="submit" value="Log In" onClick={signIn}/>
       </form>
     </div>
   );

@@ -28,7 +28,7 @@ const SignUp = ({ isVisible }) => {
         setEmail('')
         setPassword('')
       })
-      .catch((error) => console.log(error));
+      .catch((e) => console.log(e));
   };
 
   return (
