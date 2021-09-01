@@ -1,11 +1,29 @@
-import Footer from "../components/Footer";
+import Cookies from 'js-cookie'
+
+import Footer from "./Footer";
 import { AiOutlineSave, AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { GiCheckMark } from "react-icons/gi";
+import { CgProfile } from "react-icons/cg"
 
-const UserPage = () => {
+import { useHistory } from 'react-router-dom';
+
+const Dashboard = () => {
+    let history = useHistory();
+
   return (
     <div className="user-page-container">
+      <header>
+        <div className="myProfile-icon-container">
+          <CgProfile />
+        </div>
+        <div className="logout-container">
+          <p onClick={() => {
+            Cookies.remove('token')
+            history.push('/');
+          }}>LOG OUT</p>
+        </div>
+      </header>
       <h1 style={{ color: "#F0A350", textAlign: "center", margin: "3rem 0" }}>
         Good Morning Nikola!
       </h1>
@@ -167,4 +185,4 @@ const UserPage = () => {
   );
 };
 
-export default UserPage;
+export default Dashboard;

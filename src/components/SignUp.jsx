@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Cookies from 'js-cookie'
 
 import { FaUser } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
@@ -24,6 +25,8 @@ const SignUp = ({ isVisible }) => {
       })
       .then((response) => {
         console.log(response)
+        const {token} = response.data
+        Cookies.set("token", token)
         setName('')
         setEmail('')
         setPassword('')

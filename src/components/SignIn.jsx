@@ -1,16 +1,20 @@
 import {useState} from 'react'
+import Cookies from 'js-cookie'
 
 import { MdEmail } from "react-icons/md";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { RiLockPasswordFill } from "react-icons/ri";
 
 import avatar from "../assets/user-avatar.png";
+import { useHistory } from 'react-router-dom';
 
 const axios = require('axios')
 
 const SignIn = ({ isVisible }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
+  let history = useHistory();
 
   // SIGN IN
   const signIn = (e) => {
@@ -20,11 +24,15 @@ const SignIn = ({ isVisible }) => {
       password
     }).then(response => {
       console.log(response)
+      const {token} = response.data
+      Cookies.set("token", token)
+      history.push('/dashboard');
+
       setEmail('')
       setPassword('')
     }).catch(e => console.log(e))
   }
-
+   
   return (
     <div className="signIn-container">
       <div className="close-signIn-model" style={{textAlign:"right"}}>

@@ -86,11 +86,11 @@ section p {
 .sign-in-modal,
 .sign-up-modal{
     position: absolute;
-    top: 20%;
+    top: 10%;
     left: 42%;
 }
 .sign-up-modal{
-    top: 10%;
+    top: 5%;
 }
 .signIn-container,
 .signUp-container{
@@ -104,7 +104,7 @@ section p {
     padding: 0.5rem 0 3rem 0;
 }
 .signUp-container{
-    height: 600px;
+    height: 550px;
 }
 
 .avatar-container{

@@ -1,12 +1,18 @@
 import { useState } from "react";
+import Cookies from 'js-cookie'
 
 import Footer from "./Footer";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import { useHistory } from "react-router-dom";
 
 const HomePage = () => {
   const [showSignIn, setShowSingIn] = useState(false);
   const [showSignUp, setShowSingUp] = useState(false);
+
+  let history = useHistory();
+
+  if(Cookies.get('token')) return history.push('/dashboard');
 
   return (
     <div className="home-container">
