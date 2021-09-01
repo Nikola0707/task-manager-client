@@ -6,15 +6,12 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { RiLockPasswordFill } from "react-icons/ri";
 
 import avatar from "../assets/user-avatar.png";
-import { useHistory } from 'react-router-dom';
 
 const axios = require('axios')
 
 const SignIn = ({ isVisible }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
-  let history = useHistory();
 
   // SIGN IN
   const signIn = (e) => {
@@ -26,8 +23,7 @@ const SignIn = ({ isVisible }) => {
       console.log(response)
       const {token} = response.data
       Cookies.set("token", token)
-      history.push('/dashboard');
-
+      window.location.replace('/dashboard');
       setEmail('')
       setPassword('')
     }).catch(e => console.log(e))

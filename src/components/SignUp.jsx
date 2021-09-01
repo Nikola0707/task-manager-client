@@ -24,9 +24,9 @@ const SignUp = ({ isVisible }) => {
         password: password,
       })
       .then((response) => {
-        console.log(response)
         const {token} = response.data
         Cookies.set("token", token)
+        window.location.replace('/dashboard');
         setName('')
         setEmail('')
         setPassword('')

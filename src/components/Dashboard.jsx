@@ -1,16 +1,32 @@
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
+
+import { withRouter } from "react-router";
+import { useHistory } from "react-router-dom";
 
 import Footer from "./Footer";
 import { AiOutlineSave, AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { GiCheckMark } from "react-icons/gi";
-import { CgProfile } from "react-icons/cg"
+import { CgProfile } from "react-icons/cg";
 
-import { useHistory } from 'react-router-dom';
+const axios = require("axios");
 
 const Dashboard = () => {
-    let history = useHistory();
+  let history = useHistory();
 
+  const signOut = () => {
+    fetch("https://nikola-task-manager-app.herokuapp.com/users/logout", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + Cookies.get("token"),
+      },
+    })
+      .then((response) => {
+        Cookies.remove("token");
+        history.push("/");
+      })
+      .catch((e) => console.log(e));
+  };
   return (
     <div className="user-page-container">
       <header>
@@ -18,10 +34,7 @@ const Dashboard = () => {
           <CgProfile />
         </div>
         <div className="logout-container">
-          <p onClick={() => {
-            Cookies.remove('token')
-            history.push('/');
-          }}>LOG OUT</p>
+          <p onClick={signOut}>LOG OUT</p>
         </div>
       </header>
       <h1 style={{ color: "#F0A350", textAlign: "center", margin: "3rem 0" }}>
@@ -185,4 +198,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default withRouter(Dashboard);
