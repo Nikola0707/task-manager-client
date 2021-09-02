@@ -16,9 +16,6 @@ function App() {
         <Route exact path="/">
           <HomePage />
         </Route>
-        <Route exact path="/dashboard">
-          <Dashboard />
-        </Route>
       </Switch>
 
       <ProtectedRoute path="/dashboard" component={Dashboard} isAuth={Cookies.get('token')}/>

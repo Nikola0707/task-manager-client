@@ -10,8 +10,8 @@ import avatar from "../assets/user-avatar.png";
 const axios = require('axios')
 
 const SignIn = ({ isVisible }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('ristoski.nikola@gmail.com');
+  const [password, setPassword] = useState('komandalo');
 
   // SIGN IN
   const signIn = (e) => {
@@ -21,14 +21,14 @@ const SignIn = ({ isVisible }) => {
       password
     }).then(response => {
       console.log(response)
-      const {token} = response.data
+      const {token, user} = response.data
       Cookies.set("token", token)
+      Cookies.set("user", user.name)
       window.location.replace('/dashboard');
       setEmail('')
       setPassword('')
     }).catch(e => console.log(e))
   }
-   
   return (
     <div className="signIn-container">
       <div className="close-signIn-model" style={{textAlign:"right"}}>
