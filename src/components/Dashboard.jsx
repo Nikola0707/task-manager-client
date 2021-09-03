@@ -3,21 +3,19 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 import { withRouter } from "react-router";
-import { useHistory } from "react-router-dom";
 
+
+import UserProfile from "./UserProfile.jsx";
 import Greeting from "./Greeting";
 import Todo from "./Todo";
 import Footer from "./Footer";
 
 import { CgProfile } from "react-icons/cg";
-import { AiOutlineSave } from "react-icons/ai";
 
 const Dashboard = () => {
   const [userInput, setUserInput] = useState("");
   const [allUserTodos, setAllUserTodos] = useState("");
   const [pending, setPending] = useState(true);
-
-  let history = useHistory();
 
   // Fetch all user tasks
   const getAllTasks = async () => {
@@ -64,29 +62,13 @@ const Dashboard = () => {
     }
   };
 
-  // Log Out and remove token and user info from cookies
-  const signOut = () => {
-    fetch("https://nikola-task-manager-app.herokuapp.com/users/logout", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + Cookies.get("token"),
-      },
-    })
-      .then((response) => {
-        Cookies.remove("token");
-        Cookies.remove("user");
-        history.push("/");
-      })
-      .catch((e) => console.log(e));
-  };
-
   // Handle form submit
   const handleSubmit = (e) => {
-    e.preventDefault()
-    addNewTodo(userInput)
-  }
+    e.preventDefault();
+    addNewTodo(userInput);
+  };
 
-  // Get all taksh on mount
+  // Get user profile and all user tasks
   useEffect(() => {
     getAllTasks();
   }, []);
@@ -100,14 +82,13 @@ const Dashboard = () => {
   return (
     <div className="user-page-container">
       <header>
-        <div className="myProfile-icon-container">
+        <nav>
           <CgProfile />
-        </div>
-        <div className="logout-container">
-          <p onClick={signOut}>LOG OUT</p>
+        </nav>
+        <div className="user-profile-card">
+          <UserProfile/>
         </div>
       </header>
-
       <Greeting name={Cookies.get("user")} />
 
       <div className="content">
@@ -117,10 +98,6 @@ const Dashboard = () => {
             placeholder="Add new todo!"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
-            />
-          <AiOutlineSave
-            style={{ color: "#F0A350", fontSize: "1.5rem" }}
-            onClick={() => addNewTodo(userInput)}
           />
         </form>
         <div className="all-todos-container">{allUserTodos}</div>

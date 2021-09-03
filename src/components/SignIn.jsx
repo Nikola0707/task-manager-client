@@ -23,6 +23,7 @@ const SignIn = ({ isVisible }) => {
       console.log(response)
       const {token, user} = response.data
       Cookies.set("token", token)
+      Cookies.set("id", user._id)
       Cookies.set("user", user.name)
       window.location.replace('/dashboard');
       setEmail('')
