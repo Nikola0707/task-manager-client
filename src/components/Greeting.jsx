@@ -13,7 +13,7 @@ const Greeting = ({name}) => {
     // }, [])
 
     return(       
-            <h1 style={{ color: "#F0A350", textAlign: "center", margin: "3rem 0" }}>Welcome Back, {name}</h1>
+            <h1 style={{ color: "#F0A350", textAlign: "center", margin: "3rem 0" }}>Welcome Back!</h1>
     )
 }
 

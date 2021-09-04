@@ -14,6 +14,9 @@ import { CgProfile } from "react-icons/cg";
 const Dashboard = () => {
   const [userInput, setUserInput] = useState("");
   const [allUserTodos, setAllUserTodos] = useState("");
+  const [editTodo, setEditTodo] = useState(false);
+  const [editTodoID, setEditTodoID] = useState("");
+  const [editTodoDescription, setEditTodoDescription] = useState("");
   const [pending, setPending] = useState(true);
   const [showMyProfile, setShowMyProfile] = useState(false);
 
@@ -39,6 +42,9 @@ const Dashboard = () => {
             id={todo._id}
             key={i}
             setPending={setPending}
+            setEditTodo={setEditTodo}
+            setEditTodoID={setEditTodoID}
+            setEditTodoDescription={setEditTodoDescription}
           />
         ));
 
@@ -71,6 +77,31 @@ const Dashboard = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     addNewTodo(userInput);
+  };
+
+  //  EDIT TODO
+  const editHandleSubmit = (e) => {
+    e.preventDefault();
+    // editTodoValue(editTodoID);
+  };
+
+  const editTodoValue = (e, todoId) => {
+    e.preventDefault()
+    const body = {
+      description: editTodoDescription,
+    };
+    fetch(`https://nikola-task-manager-app.herokuapp.com/tasks/${todoId}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: "Bearer " + Cookies.get("token"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+      .then((response) => response.json())
+      .catch((e) => console.log(e));
+    setEditTodoDescription("");
+    setPending(false);
   };
 
   //   Get User profile info
@@ -121,20 +152,38 @@ const Dashboard = () => {
           <CgProfile onClick={() => setShowMyProfile(!showMyProfile)} />
         </nav>
         <div className="user-profile-card">
-          {showMyProfile && <UserProfile userAvatarUrl={userAvatarUrl} userInfo={userInfo} setUserAvatarUrl={setUserAvatarUrl}/>}
+          {showMyProfile && (
+            <UserProfile
+              userAvatarUrl={userAvatarUrl}
+              userInfo={userInfo}
+              setUserAvatarUrl={setUserAvatarUrl}
+            />
+          )}
         </div>
       </header>
       <Greeting name={Cookies.get("user")} />
 
       <div className="content">
-        <form className="add-new-item-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Add new todo!"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-          />
-        </form>
+        {!editTodo ? (
+          <form className="add-new-item-form" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Add new todo!"
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+            />
+          </form>
+        ) : (
+          <form className="add-new-item-form" onSubmit={(e) => editTodoValue(e, editTodoID)}>
+            <input
+              type="text"
+              placeholder="Edit todo"
+              value={editTodoDescription}
+              onChange={(e) => setEditTodoDescription(e.target.value)}
+            />
+          </form>
+        )}
+
         <div className="all-todos-container">{allUserTodos}</div>
       </div>
       <div className="footer">

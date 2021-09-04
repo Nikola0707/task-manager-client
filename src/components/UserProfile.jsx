@@ -45,6 +45,24 @@ const UserProfile = ({ userAvatarUrl, userInfo, setUserAvatarUrl }) => {
       .catch((e) => console.log(e));
   };
 
+  // Remove Account
+  const removeAcc = () => {
+    fetch("https://nikola-task-manager-app.herokuapp.com/users/me", {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + Cookies.get("token"),
+      },
+    })
+      .then((response) => response.json())
+      .then(() => {
+        Cookies.remove("token");
+        Cookies.remove("user");
+        Cookies.remove("id");
+        history.push("/");
+      })
+      .catch((e) => console.log(e));
+  };
+
   return (
     <div className="user-profle-container">
       <div className="user-name-and-avatar">
@@ -82,7 +100,7 @@ const UserProfile = ({ userAvatarUrl, userInfo, setUserAvatarUrl }) => {
             <button onClick={() => signOut()}>Log Out</button>
           </div>
           <div>
-            <button>Remove Account</button>
+            <button onClick={() => removeAcc()}>Remove Account</button>
           </div>
         </div>
       </div>

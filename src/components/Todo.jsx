@@ -4,7 +4,7 @@ import { AiOutlineSave, AiOutlineDelete } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { GiCheckMark } from "react-icons/gi";
 
-const Todo = ({todoText, completed, id, setPending}) => {
+const Todo = ({todoText, completed, id, setPending, setEditTodo, setEditTodoID, setEditTodoDescription}) => {
 
 const URL = `https://nikola-task-manager-app.herokuapp.com/tasks/${id}`
 
@@ -40,6 +40,12 @@ const removeTodo = async() => {
             cursor: "pointer",
             marginRight: "1rem",
           }}
+          onClick={() => {
+            setEditTodo(true)
+            setEditTodoID(id)
+            setEditTodoDescription(todoText)
+          }
+        }
         />
         <AiOutlineDelete
           style={{
