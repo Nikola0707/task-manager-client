@@ -79,12 +79,6 @@ const Dashboard = () => {
     addNewTodo(userInput);
   };
 
-  //  EDIT TODO
-  const editHandleSubmit = (e) => {
-    e.preventDefault();
-    // editTodoValue(editTodoID);
-  };
-
   const editTodoValue = (e, todoId) => {
     e.preventDefault()
     const body = {
@@ -102,6 +96,7 @@ const Dashboard = () => {
       .catch((e) => console.log(e));
     setEditTodoDescription("");
     setPending(false);
+    setEditTodo(false)
   };
 
   //   Get User profile info
