@@ -16,6 +16,7 @@ const Dashboard = () => {
   const [userInput, setUserInput] = useState("");
   const [allUserTodos, setAllUserTodos] = useState("");
   const [pending, setPending] = useState(true);
+  const [showMyProfile, setShowMyProfile] = useState(false)
 
   // Fetch all user tasks
   const getAllTasks = async () => {
@@ -83,10 +84,10 @@ const Dashboard = () => {
     <div className="user-page-container">
       <header>
         <nav>
-          <CgProfile />
+          <CgProfile onClick={() => setShowMyProfile(!showMyProfile)}/>
         </nav>
         <div className="user-profile-card">
-          <UserProfile/>
+          {showMyProfile && <UserProfile />}
         </div>
       </header>
       <Greeting name={Cookies.get("user")} />

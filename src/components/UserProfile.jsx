@@ -6,13 +6,14 @@ const UserProfile = () => {
   const [userInfo, setUserInfo] = useState("");
   const [userAvatarUrl, setUserAvatarUrl] = useState("");
   const [selectedFile, setSelectedFile] = useState();
+  const [updatedAvatar, setUpdatedAvatar] = useState(false)
 
   let history = useHistory();
   const userId = Cookies.get("id");
 
   //   Get User profile info
-  const myProfile = async () => {
-    await fetch(`https://nikola-task-manager-app.herokuapp.com/users/me`, {
+  const myProfile = () => {
+    fetch(`https://nikola-task-manager-app.herokuapp.com/users/me`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + Cookies.get("token"),
@@ -24,8 +25,8 @@ const UserProfile = () => {
   };
 
   // Fetch user avatar
-  const userAvatar = async () => {
-    await fetch(
+  const userAvatar = () => {
+    fetch(
       `https://nikola-task-manager-app.herokuapp.com/users/${userId}/avatar`,
       {
         method: "GET",
@@ -56,7 +57,6 @@ const UserProfile = () => {
       body: formData,
     })
       .then((response) => console.log(response))
-      .then(() => userAvatar())
       .catch((e) => console.log(e));
   };
 
@@ -78,9 +78,10 @@ const UserProfile = () => {
   };
 
   useEffect(() => {
-    userAvatar();
     myProfile();
-  }, []);   
+    userAvatar();
+  }, []);
+  
 
   return (
     <div className="user-profle-container">
@@ -101,7 +102,7 @@ const UserProfile = () => {
             {userInfo.age}
           </p>
           <div className="upload-avatar">
-            <label htmlFor="avatar">Upload Avatar</label>
+            <div style={{marginBottom: '10px'}}><label htmlFor="avatar">Upload Avatar</label></div>
             <input
               type="file"
               name="avatar"
@@ -109,7 +110,10 @@ const UserProfile = () => {
               accept="image/*"
               onChange={handleImageInput}
             />
-            <button onClick={() => uploadAvatar()}>Upload</button>
+            <button onClick={() => {
+              uploadAvatar()
+              setUpdatedAvatar(true)
+              }}>Upload</button>
           </div>
         </div>
         <div className="user-profile-footer">
