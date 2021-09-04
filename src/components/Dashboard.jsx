@@ -13,6 +13,8 @@ import { CgProfile } from "react-icons/cg";
 
 const Dashboard = () => {
   const [userInput, setUserInput] = useState("");
+  const [allTodosForPagination, setAllTodosforPagination] = useState([]);
+  const [pagination, setPagination] = useState(0);
   const [allUserTodos, setAllUserTodos] = useState("");
   const [editTodo, setEditTodo] = useState(false);
   const [editTodoID, setEditTodoID] = useState("");
@@ -35,6 +37,23 @@ const Dashboard = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        setAllTodosforPagination(data.splice(4));
+      });
+  };
+
+  // Pagination
+  const paginationRender = async () => {
+    await fetch(
+      `https://nikola-task-manager-app.herokuapp.com/tasks?limit=4&skip=${pagination}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + Cookies.get("token"),
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
         const renderTodo = data.map((todo, i) => (
           <Todo
             todoText={todo.description}
@@ -47,7 +66,6 @@ const Dashboard = () => {
             setEditTodoDescription={setEditTodoDescription}
           />
         ));
-
         setAllUserTodos(renderTodo);
       });
   };
@@ -80,7 +98,7 @@ const Dashboard = () => {
   };
 
   const editTodoValue = (e, todoId) => {
-    e.preventDefault()
+    e.preventDefault();
     const body = {
       description: editTodoDescription,
     };
@@ -96,7 +114,7 @@ const Dashboard = () => {
       .catch((e) => console.log(e));
     setEditTodoDescription("");
     setPending(false);
-    setEditTodo(false)
+    setEditTodo(false);
   };
 
   //   Get User profile info
@@ -131,6 +149,7 @@ const Dashboard = () => {
   useEffect(() => {
     userAvatar();
     getAllTasks();
+    paginationRender();
   }, [userAvatarUrl]);
 
   // get all task after new added
@@ -139,6 +158,11 @@ const Dashboard = () => {
     getAllTasks();
     setPending(true);
   }, [pending]);
+
+  useEffect(() => {
+    getAllTasks();
+    paginationRender();
+  }, [pagination]);
 
   return (
     <div className="user-page-container">
@@ -160,16 +184,42 @@ const Dashboard = () => {
 
       <div className="content">
         {!editTodo ? (
-          <form className="add-new-item-form" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="Add new todo!"
-              value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
-            />
-          </form>
+          <>
+            <form className="add-new-item-form" onSubmit={handleSubmit}>
+              <input
+                type="text"
+                placeholder="Add new todo!"
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+              />
+            </form>
+            <div className="type-of-todos-container">
+              <label htmlFor="all">All</label>
+              <input type="radio" name="todos" id="all" value="All" />
+
+              <label htmlFor="all">Uncompleted</label>
+              <input
+                type="radio"
+                name="todos"
+                id="uncompleted"
+                value="uncompleted"
+              />
+
+              <label htmlFor="completed">Competed</label>
+              <input
+                type="radio"
+                name="todos"
+                id="completed"
+                value="Completed"
+                onClick={() => console.log("click")}
+              />
+            </div>
+          </>
         ) : (
-          <form className="add-new-item-form" onSubmit={(e) => editTodoValue(e, editTodoID)}>
+          <form
+            className="add-new-item-form"
+            onSubmit={(e) => editTodoValue(e, editTodoID)}
+          >
             <input
               type="text"
               placeholder="Edit todo"
@@ -179,7 +229,49 @@ const Dashboard = () => {
           </form>
         )}
 
-        <div className="all-todos-container">{allUserTodos}</div>
+        <div className="all-todos-container">
+          {allUserTodos}
+          <div className="pagination">
+            <div className="pagination-numbers-container">
+              <div>
+                {" "}
+                <button
+                  onClick={() => {
+                    if (
+                      pagination > 0 &&
+                      pagination <= allTodosForPagination.length
+                    ) {
+                      setPagination(pagination - 1);
+                    }
+                  }}
+                >
+                  Back
+                </button>
+              </div>
+              <div className="pagination-numbers">
+                {allTodosForPagination.map((item, i) => {
+                  return (
+                    <button key={i} onClick={() => setPagination(i)}>
+                      {i + 1}
+                    </button>
+                  );
+                })}
+              </div>
+              <div>
+                {" "}
+                <button
+                  onClick={() => {
+                    if (pagination < allTodosForPagination.length) {
+                      setPagination(pagination + 1);
+                    }
+                  }}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="footer">
         <Footer

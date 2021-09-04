@@ -273,7 +273,33 @@ input[type="submit"]{
     border-bottom: 2px solid #F0A350;
     background: transparent;
     padding-left: 1rem;
+}
+.pagination{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+    padding: 10px;
     box-sizing: border-box;
+    width: 90%;
+    height: 60px;
+    background: #385264;
+}
+.pagination-numbers-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.pagination-numbers-container button{
+    border: none;
+    background: #fff;
+    margin: 0 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+.type-of-todos-container{
+    display: flex;
 }
 .edit-delete-icons{
     margin-left: auto;
