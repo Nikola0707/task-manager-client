@@ -4,7 +4,6 @@ import Cookies from "js-cookie";
 
 import { withRouter } from "react-router";
 
-
 import UserProfile from "./UserProfile.jsx";
 import Greeting from "./Greeting";
 import Todo from "./Todo";
@@ -16,7 +15,12 @@ const Dashboard = () => {
   const [userInput, setUserInput] = useState("");
   const [allUserTodos, setAllUserTodos] = useState("");
   const [pending, setPending] = useState(true);
-  const [showMyProfile, setShowMyProfile] = useState(false)
+  const [showMyProfile, setShowMyProfile] = useState(false);
+
+  const [userInfo, setUserInfo] = useState("");
+  const [userAvatarUrl, setUserAvatarUrl] = useState("");
+
+  const userId = Cookies.get("id");
 
   // Fetch all user tasks
   const getAllTasks = async () => {
@@ -69,13 +73,43 @@ const Dashboard = () => {
     addNewTodo(userInput);
   };
 
+  //   Get User profile info
+  const myProfile = () => {
+    fetch(`https://nikola-task-manager-app.herokuapp.com/users/me`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + Cookies.get("token"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setUserInfo(data))
+      .catch((e) => console.log(e));
+  };
+
+  // Fetch user avatar
+  const userAvatar = () => {
+    fetch(
+      `https://nikola-task-manager-app.herokuapp.com/users/${userId}/avatar`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + Cookies.get("token"),
+        },
+      }
+    )
+      .then((response) => setUserAvatarUrl(response.url))
+      .catch((e) => console.log(e));
+  };
+
   // Get user profile and all user tasks
   useEffect(() => {
+    userAvatar();
     getAllTasks();
-  }, []);
+  }, [userAvatarUrl]);
 
   // get all task after new added
   useEffect(() => {
+    myProfile();
     getAllTasks();
     setPending(true);
   }, [pending]);
@@ -84,10 +118,10 @@ const Dashboard = () => {
     <div className="user-page-container">
       <header>
         <nav>
-          <CgProfile onClick={() => setShowMyProfile(!showMyProfile)}/>
+          <CgProfile onClick={() => setShowMyProfile(!showMyProfile)} />
         </nav>
         <div className="user-profile-card">
-          {showMyProfile && <UserProfile />}
+          {showMyProfile && <UserProfile userAvatarUrl={userAvatarUrl} userInfo={userInfo} setUserAvatarUrl={setUserAvatarUrl}/>}
         </div>
       </header>
       <Greeting name={Cookies.get("user")} />

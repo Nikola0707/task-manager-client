@@ -129,6 +129,16 @@ section p {
     font-size: 1.1rem;
     font-weight: bold;
 }
+.upload-avatar button{
+    margin-top: 10px;
+    width: 70%;
+    background: #385264;
+    border: none;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
 .user-profile-content p,
 .upload-avatar{
@@ -142,7 +152,7 @@ section p {
 .user-profile-footer{
     display: flex;
     justify-content: space-around;
-    background: #ff4f5b3b;
+    background: #385a64;
     padding: 10px 0;
 }
 .user-profile-footer button{
@@ -194,6 +204,7 @@ form{
     width: 90%;
     margin: 0 auto;
 }
+
 input[type="email"],
 input[type="text"]{
     margin-bottom: 1.5rem;

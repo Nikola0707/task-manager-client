@@ -1,43 +1,11 @@
 import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const UserProfile = () => {
-  const [userInfo, setUserInfo] = useState("");
-  const [userAvatarUrl, setUserAvatarUrl] = useState("");
+const UserProfile = ({ userAvatarUrl, userInfo, setUserAvatarUrl }) => {
   const [selectedFile, setSelectedFile] = useState();
-  const [updatedAvatar, setUpdatedAvatar] = useState(false)
 
   let history = useHistory();
-  const userId = Cookies.get("id");
-
-  //   Get User profile info
-  const myProfile = () => {
-    fetch(`https://nikola-task-manager-app.herokuapp.com/users/me`, {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + Cookies.get("token"),
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setUserInfo(data))
-      .catch((e) => console.log(e));
-  };
-
-  // Fetch user avatar
-  const userAvatar = () => {
-    fetch(
-      `https://nikola-task-manager-app.herokuapp.com/users/${userId}/avatar`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + Cookies.get("token"),
-        },
-      }
-    )
-      .then((response) => setUserAvatarUrl(response.url))
-      .catch((e) => console.log(e));
-  };
 
   // Handle User Image input
   const handleImageInput = (e) => {
@@ -56,7 +24,7 @@ const UserProfile = () => {
       },
       body: formData,
     })
-      .then((response) => console.log(response))
+      .then((response) => setUserAvatarUrl(response.url))
       .catch((e) => console.log(e));
   };
 
@@ -77,12 +45,6 @@ const UserProfile = () => {
       .catch((e) => console.log(e));
   };
 
-  useEffect(() => {
-    myProfile();
-    userAvatar();
-  }, []);
-  
-
   return (
     <div className="user-profle-container">
       <div className="user-name-and-avatar">
@@ -102,7 +64,9 @@ const UserProfile = () => {
             {userInfo.age}
           </p>
           <div className="upload-avatar">
-            <div style={{marginBottom: '10px'}}><label htmlFor="avatar">Upload Avatar</label></div>
+            <div style={{ marginBottom: "10px" }}>
+              <label htmlFor="avatar">Upload Avatar</label>
+            </div>
             <input
               type="file"
               name="avatar"
@@ -110,10 +74,7 @@ const UserProfile = () => {
               accept="image/*"
               onChange={handleImageInput}
             />
-            <button onClick={() => {
-              uploadAvatar()
-              setUpdatedAvatar(true)
-              }}>Upload</button>
+            <button onClick={() => uploadAvatar()}>Upload</button>
           </div>
         </div>
         <div className="user-profile-footer">
