@@ -174,6 +174,7 @@ const Dashboard = () => {
               />
             </form>
             <div className="type-of-todos-container">
+              {/* Filter Todos By category */}
               <label htmlFor="all">All</label>
               <input type="radio" name="todos" id="all" value="All" />
 
