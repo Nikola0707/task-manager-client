@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 import { withRouter } from "react-router";
 
-import UserProfile from "./UserProfile.jsx";
+  import UserProfile from "./UserProfile.jsx";
 import Greeting from "./Greeting";
 import Todo from "./Todo";
 import Footer from "./Footer";
@@ -13,8 +13,7 @@ import { CgProfile } from "react-icons/cg";
 
 const Dashboard = () => {
   const [userInput, setUserInput] = useState("");
-  const [allTodosForPagination, setAllTodosforPagination] = useState([]);
-  const [pagination, setPagination] = useState(0);
+
   const [allUserTodos, setAllUserTodos] = useState("");
   const [editTodo, setEditTodo] = useState(false);
   const [editTodoID, setEditTodoID] = useState("");
@@ -29,22 +28,8 @@ const Dashboard = () => {
 
   // Fetch all user tasks
   const getAllTasks = async () => {
-    await fetch("https://nikola-task-manager-app.herokuapp.com/tasks", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + Cookies.get("token"),
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setAllTodosforPagination(data.splice(4));
-      });
-  };
-
-  // Pagination
-  const paginationRender = async () => {
     await fetch(
-      `https://nikola-task-manager-app.herokuapp.com/tasks?limit=4&skip=${pagination}`,
+      `https://nikola-task-manager-app.herokuapp.com/tasks`,
       {
         method: "GET",
         headers: {
@@ -149,7 +134,7 @@ const Dashboard = () => {
   useEffect(() => {
     userAvatar();
     getAllTasks();
-    paginationRender();
+
   }, [userAvatarUrl]);
 
   // get all task after new added
@@ -158,11 +143,6 @@ const Dashboard = () => {
     getAllTasks();
     setPending(true);
   }, [pending]);
-
-  useEffect(() => {
-    getAllTasks();
-    paginationRender();
-  }, [pagination]);
 
   return (
     <div className="user-page-container">
@@ -231,46 +211,6 @@ const Dashboard = () => {
 
         <div className="all-todos-container">
           {allUserTodos}
-          <div className="pagination">
-            <div className="pagination-numbers-container">
-              <div>
-                {" "}
-                <button
-                  onClick={() => {
-                    if (
-                      pagination > 0 &&
-                      pagination <= allTodosForPagination.length
-                    ) {
-                      setPagination(pagination - 1);
-                    }
-                  }}
-                >
-                  Back
-                </button>
-              </div>
-              <div className="pagination-numbers">
-                {allTodosForPagination.map((item, i) => {
-                  return (
-                    <button key={i} onClick={() => setPagination(i)}>
-                      {i + 1}
-                    </button>
-                  );
-                })}
-              </div>
-              <div>
-                {" "}
-                <button
-                  onClick={() => {
-                    if (pagination < allTodosForPagination.length) {
-                      setPagination(pagination + 1);
-                    }
-                  }}
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <div className="footer">
