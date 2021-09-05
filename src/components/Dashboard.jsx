@@ -21,6 +21,8 @@ const Dashboard = () => {
   const [pending, setPending] = useState(true);
   const [showMyProfile, setShowMyProfile] = useState(false);
 
+  const [filterStatus, setFilterStatus] = useState('')
+
   const [userInfo, setUserInfo] = useState("");
   const [userAvatarUrl, setUserAvatarUrl] = useState("");
 
@@ -29,7 +31,7 @@ const Dashboard = () => {
   // Fetch all user tasks
   const getAllTasks = async () => {
     await fetch(
-      `https://nikola-task-manager-app.herokuapp.com/tasks`,
+      `https://nikola-task-manager-app.herokuapp.com/tasks?completed=${filterStatus}`,
       {
         method: "GET",
         headers: {
@@ -144,6 +146,11 @@ const Dashboard = () => {
     setPending(true);
   }, [pending]);
 
+  // Rerender only tasks
+  useEffect(() => {
+    getAllTasks()
+  }, [filterStatus])
+
   return (
     <div className="user-page-container">
       <header>
@@ -176,7 +183,7 @@ const Dashboard = () => {
             <div className="type-of-todos-container">
               {/* Filter Todos By category */}
               <label htmlFor="all">All</label>
-              <input type="radio" name="todos" id="all" value="All" />
+              <input type="radio" name="todos" id="all" value="All" onClick={() => setFilterStatus('')}/>
 
               <label htmlFor="all">Uncompleted</label>
               <input
@@ -184,6 +191,7 @@ const Dashboard = () => {
                 name="todos"
                 id="uncompleted"
                 value="uncompleted"
+                onClick={() => setFilterStatus(false)}
               />
 
               <label htmlFor="completed">Competed</label>
@@ -192,7 +200,7 @@ const Dashboard = () => {
                 name="todos"
                 id="completed"
                 value="Completed"
-                onClick={() => console.log("click")}
+                onClick={() => setFilterStatus(true)}
               />
             </div>
           </>
