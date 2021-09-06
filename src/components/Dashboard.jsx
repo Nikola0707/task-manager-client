@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 import { withRouter } from "react-router";
 
-  import UserProfile from "./UserProfile.jsx";
+import UserProfile from "./UserProfile.jsx";
 import Greeting from "./Greeting";
 import Todo from "./Todo";
 import Footer from "./Footer";
@@ -21,12 +21,14 @@ const Dashboard = () => {
   const [pending, setPending] = useState(true);
   const [showMyProfile, setShowMyProfile] = useState(false);
 
-  const [filterStatus, setFilterStatus] = useState('')
+  const [filterStatus, setFilterStatus] = useState("");
 
   const [userInfo, setUserInfo] = useState("");
   const [userAvatarUrl, setUserAvatarUrl] = useState("");
 
+  // User ID and User Token
   const userId = Cookies.get("id");
+  const userToken = Cookies.get("token");
 
   // Fetch all user tasks
   const getAllTasks = async () => {
@@ -35,7 +37,7 @@ const Dashboard = () => {
       {
         method: "GET",
         headers: {
-          Authorization: "Bearer " + Cookies.get("token"),
+          Authorization: "Bearer " + userToken,
         },
       }
     )
@@ -66,7 +68,7 @@ const Dashboard = () => {
       await fetch("https://nikola-task-manager-app.herokuapp.com/tasks", {
         method: "POST",
         headers: {
-          Authorization: "Bearer " + Cookies.get("token"),
+          Authorization: "Bearer " + userToken,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
@@ -92,7 +94,7 @@ const Dashboard = () => {
     fetch(`https://nikola-task-manager-app.herokuapp.com/tasks/${todoId}`, {
       method: "PATCH",
       headers: {
-        Authorization: "Bearer " + Cookies.get("token"),
+        Authorization: "Bearer " + userToken,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
@@ -109,7 +111,7 @@ const Dashboard = () => {
     fetch(`https://nikola-task-manager-app.herokuapp.com/users/me`, {
       method: "GET",
       headers: {
-        Authorization: "Bearer " + Cookies.get("token"),
+        Authorization: "Bearer " + userToken,
       },
     })
       .then((response) => response.json())
@@ -124,7 +126,7 @@ const Dashboard = () => {
       {
         method: "GET",
         headers: {
-          Authorization: "Bearer " + Cookies.get("token"),
+          Authorization: "Bearer " + userToken,
         },
       }
     )
@@ -136,7 +138,6 @@ const Dashboard = () => {
   useEffect(() => {
     userAvatar();
     getAllTasks();
-
   }, [userAvatarUrl]);
 
   // get all task after new added
@@ -148,8 +149,8 @@ const Dashboard = () => {
 
   // Rerender only tasks
   useEffect(() => {
-    getAllTasks()
-  }, [filterStatus])
+    getAllTasks();
+  }, [filterStatus]);
 
   return (
     <div className="user-page-container">
@@ -183,14 +184,20 @@ const Dashboard = () => {
             <div className="type-of-todos-container">
               {/* Filter Todos By category */}
               <label htmlFor="all">All</label>
-              <input type="radio" name="todos" id="all" value="All" onClick={() => setFilterStatus('')}/>
+              <input
+                type="radio"
+                name="todos"
+                id="all"
+                value="All"
+                onClick={() => setFilterStatus("")}
+              />
 
-              <label htmlFor="all">Uncompleted</label>
+              <label htmlFor="uncompleted">Uncompleted</label>
               <input
                 type="radio"
                 name="todos"
                 id="uncompleted"
-                value="uncompleted"
+                value="Uncompleted"
                 onClick={() => setFilterStatus(false)}
               />
 
@@ -218,9 +225,7 @@ const Dashboard = () => {
           </form>
         )}
 
-        <div className="all-todos-container">
-          {allUserTodos}
-        </div>
+        <div className="all-todos-container">{allUserTodos}</div>
       </div>
       <div className="footer">
         <Footer
