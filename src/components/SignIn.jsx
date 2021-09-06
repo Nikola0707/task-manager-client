@@ -1,5 +1,5 @@
-import {useState} from 'react'
-import Cookies from 'js-cookie'
+import { useState } from "react";
+import Cookies from "js-cookie";
 
 import { MdEmail } from "react-icons/md";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -7,33 +7,51 @@ import { RiLockPasswordFill } from "react-icons/ri";
 
 import avatar from "../assets/user-avatar.png";
 
-const axios = require('axios')
-
 const SignIn = ({ isVisible }) => {
-  const [email, setEmail] = useState('ristoski.nikola@gmail.com');
-  const [password, setPassword] = useState('komandalo');
+  const [email, setEmail] = useState("ristoski.nikola@gmail.com");
+  const [password, setPassword] = useState("komandalo");
 
-  // SIGN IN
+  const [logginError, setLogginError] = useState(false);
+  const [logginErrorMessage, setLogginErrorMessage] = useState("");
+
   const signIn = (e) => {
-    e.preventDefault()
-    axios.post('https://nikola-task-manager-app.herokuapp.com/users/login',{
-      email,
-      password
-    }).then(response => {
-      console.log(response)
-      const {token, user} = response.data
-      Cookies.set("token", token)
-      Cookies.set("id", user._id)
-      Cookies.set("user", user.name)
-      window.location.replace('/dashboard');
-      setEmail('')
-      setPassword('')
-    }).catch(e => console.log(e))
-  }
+    e.preventDefault();
+
+    fetch("https://nikola-task-manager-app.herokuapp.com/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email, password: password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        const { token, user } = data;
+        Cookies.set("token", token);
+        Cookies.set("id", user._id);
+        Cookies.set("user", user.name);
+        window.location.replace("/dashboard");
+        setEmail("");
+        setPassword("");
+      })
+      .catch((e) => {
+        setLogginError(true);
+        setLogginErrorMessage("Check your Email or Password!");
+      });
+  };
+
   return (
     <div className="signIn-container">
-      <div className="close-signIn-model" style={{textAlign:"right"}}>
-          <AiFillCloseCircle  style={{margin:"0.5rem 1.5rem", fontSize:"1.4rem",color:"#385a64"}} onClick={() => isVisible(false)} />
+      <div className="close-signIn-model" style={{ textAlign: "right" }}>
+        <AiFillCloseCircle
+          style={{
+            margin: "0.5rem 1.5rem",
+            fontSize: "1.4rem",
+            color: "#385a64",
+          }}
+          onClick={() => isVisible(false)}
+        />
       </div>
       <div className="avatar-container">
         <img src={avatar} alt="avatar" />
@@ -44,7 +62,15 @@ const SignIn = ({ isVisible }) => {
           <span>
             <MdEmail style={{ color: "#385a64", fontSize: "20px" }} />
           </span>
-          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value)
+              setLogginError(false)
+            }}
+          />
         </div>
 
         <div className="inputBox">
@@ -53,9 +79,18 @@ const SignIn = ({ isVisible }) => {
               style={{ color: "#385a64", fontSize: "20px" }}
             />
           </span>
-          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value)
+              setLogginError(false)
+            }}
+          />
         </div>
-        <input type="submit" value="Log In" onClick={signIn}/>
+        {logginError && <p className="errorMessage">{logginErrorMessage}</p>}
+        <input type="submit" value="Log In" onClick={signIn} />
       </form>
     </div>
   );

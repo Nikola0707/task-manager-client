@@ -17,6 +17,12 @@ h1{
     font-size: 2rem;
     color: #ff4f5a;
 }
+.errorMessage{
+    color: red;
+    position: absolute;
+    font-weight: bold;
+    right: 50px;
+}
 section p {
     width: 600px;
     margin-bottom: 5rem;
