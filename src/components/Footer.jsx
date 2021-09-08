@@ -19,8 +19,10 @@ const Footer = ({backgroundDesignedBy, backgroundColor}) => {
                <a href="https://nikolaristoski.netlify.app/"><IoPlanetOutline /></a>
             </div>
         </div>
-      <div></div>
+      <div>
       <a className="background-image-link" href="http://www.freepik.com">{backgroundDesignedBy}</a>
+      </div>
+
     </div>
   );
 };

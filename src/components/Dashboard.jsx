@@ -18,6 +18,7 @@ const Dashboard = () => {
   const [editTodo, setEditTodo] = useState(false);
   const [editTodoID, setEditTodoID] = useState("");
   const [editTodoDescription, setEditTodoDescription] = useState("");
+
   const [pending, setPending] = useState(true);
   const [showMyProfile, setShowMyProfile] = useState(false);
 
@@ -31,8 +32,8 @@ const Dashboard = () => {
   const userToken = Cookies.get("token");
 
   // Fetch all user tasks
-  const getAllTasks = async () => {
-    await fetch(
+  const getAllTasks = () => {
+    fetch(
       `https://nikola-task-manager-app.herokuapp.com/tasks?completed=${filterStatus}`,
       {
         method: "GET",
@@ -201,7 +202,7 @@ const Dashboard = () => {
                 onClick={() => setFilterStatus(false)}
               />
 
-              <label htmlFor="completed">Competed</label>
+              <label htmlFor="completed">Completed</label>
               <input
                 type="radio"
                 name="todos"
@@ -225,7 +226,10 @@ const Dashboard = () => {
           </form>
         )}
 
-        <div className="all-todos-container">{allUserTodos}</div>
+        <div className="all-todos-container">
+          {/* In this container render all users todos */}
+          {allUserTodos}
+        </div>
       </div>
       <div className="footer">
         <Footer
