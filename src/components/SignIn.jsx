@@ -8,8 +8,8 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import avatar from "../assets/user-avatar.png";
 
 const SignIn = ({ isVisible }) => {
-  const [email, setEmail] = useState("ristoski.nikola@gmail.com");
-  const [password, setPassword] = useState("komandalo");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const [logginError, setLogginError] = useState(false);
   const [logginErrorMessage, setLogginErrorMessage] = useState("");
