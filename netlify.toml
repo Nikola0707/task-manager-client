@@ -1,10 +1,2 @@
 [build]
 command = "CI= npm run build"
-
-[[redirects]]
-  from = "https://taskmanagerapplication.netlify.app/"
-  to = "https://taskmanagerapplication.netlify.app/dashboard"
-
-  [[redirects]]
-  from = "https://taskmanagerapplication.netlify.app/dashboard"
-  to = "https://taskmanagerapplication.netlify.app/"
