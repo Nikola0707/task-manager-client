@@ -14,7 +14,7 @@ const Todo = ({
   setEditTodoID,
   setEditTodoDescription,
 }) => {
-  const URL = `https://nikola-task-manager-app.herokuapp.com/tasks/${id}`;
+  const URL = `${process.env.REACT_APP_API_URL}/tasks/${id}`;
 
   // Remove Task
   const removeTodo = () => {

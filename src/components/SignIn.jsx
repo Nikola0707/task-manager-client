@@ -19,7 +19,7 @@ const SignIn = ({ isVisible }) => {
   const signIn = (e) => {
     e.preventDefault();
     setPending(true);
-    fetch("https://nikola-task-manager-app.herokuapp.com/users/login", {
+    fetch(`${process.env.REACT_APP_API_URL}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

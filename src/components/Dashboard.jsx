@@ -15,6 +15,8 @@ const Dashboard = () => {
   const [userInput, setUserInput] = useState("");
 
   const [allUserTodos, setAllUserTodos] = useState("");
+  const [showSpinner, setShowSpinner] = useState(false);
+
   const [editTodo, setEditTodo] = useState(false);
   const [editTodoID, setEditTodoID] = useState("");
   const [editTodoDescription, setEditTodoDescription] = useState("");
@@ -33,8 +35,9 @@ const Dashboard = () => {
 
   // Fetch all user tasks
   const getAllTasks = () => {
+    setShowSpinner(true);
     fetch(
-      `https://nikola-task-manager-app.herokuapp.com/tasks?completed=${filterStatus}`,
+      `${process.env.REACT_APP_API_URL}/tasks?completed=${filterStatus}`,
       {
         method: "GET",
         headers: {
@@ -57,6 +60,7 @@ const Dashboard = () => {
           />
         ));
         setAllUserTodos(renderTodo);
+        setShowSpinner(false);
       });
   };
 
@@ -66,7 +70,7 @@ const Dashboard = () => {
       description: userInput,
     };
     try {
-      await fetch("https://nikola-task-manager-app.herokuapp.com/tasks", {
+      await fetch(`${process.env.REACT_APP_API_URL}/tasks`, {
         method: "POST",
         headers: {
           Authorization: "Bearer " + userToken,
@@ -92,7 +96,7 @@ const Dashboard = () => {
     const body = {
       description: editTodoDescription,
     };
-    fetch(`https://nikola-task-manager-app.herokuapp.com/tasks/${todoId}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/tasks/${todoId}`, {
       method: "PATCH",
       headers: {
         Authorization: "Bearer " + userToken,
@@ -109,7 +113,7 @@ const Dashboard = () => {
 
   //   Get User profile info
   const myProfile = () => {
-    fetch(`https://nikola-task-manager-app.herokuapp.com/users/me`, {
+    fetch(`${process.env.REACT_APP_API_URL}/users/me`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + userToken,
@@ -123,7 +127,7 @@ const Dashboard = () => {
   // Fetch user avatar
   const userAvatar = () => {
     fetch(
-      `https://nikola-task-manager-app.herokuapp.com/users/${userId}/avatar`,
+      `${process.env.REACT_APP_API_URL}/users/${userId}/avatar`,
       {
         method: "GET",
         headers: {
@@ -157,7 +161,10 @@ const Dashboard = () => {
     <div className="user-page-container">
       <header>
         <nav>
+          <div onClick={() => setShowMyProfile(!showMyProfile)}>
           <CgProfile onClick={() => setShowMyProfile(!showMyProfile)} />
+          <p>Menu</p>
+          </div>  
         </nav>
         <div className="user-profile-card">
           {showMyProfile && (
@@ -225,11 +232,16 @@ const Dashboard = () => {
             />
           </form>
         )}
-
-        <div className="all-todos-container">
-          {/* In this container render all users todos */}
-          {allUserTodos}
-        </div>
+        {showSpinner ? (
+          <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        ) : (
+          <div className="all-todos-container">{allUserTodos}</div>
+        )}
       </div>
       <div className="footer">
         <Footer

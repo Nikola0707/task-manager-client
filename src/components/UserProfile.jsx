@@ -17,7 +17,7 @@ const UserProfile = ({ userAvatarUrl, userInfo, setUserAvatarUrl }) => {
     const formData = new FormData();
     formData.append("avatar", selectedFile);
 
-    fetch("https://nikola-task-manager-app.herokuapp.com/users/me/avatar", {
+    fetch(`${process.env.REACT_APP_API_URL}/users/me/avatar`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + Cookies.get("token"),
@@ -30,7 +30,7 @@ const UserProfile = ({ userAvatarUrl, userInfo, setUserAvatarUrl }) => {
 
   // Log Out and remove token and user info from cookies
   const signOut = () => {
-    fetch("https://nikola-task-manager-app.herokuapp.com/users/logout", {
+    fetch(`${process.env.REACT_APP_API_URL}/users/me/avatar/users/logout`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + Cookies.get("token"),
@@ -47,7 +47,7 @@ const UserProfile = ({ userAvatarUrl, userInfo, setUserAvatarUrl }) => {
 
   // Remove Account
   const removeAcc = () => {
-    fetch("https://nikola-task-manager-app.herokuapp.com/users/me", {
+    fetch(`${process.env.REACT_APP_API_URL}/users/me`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + Cookies.get("token"),
