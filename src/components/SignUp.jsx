@@ -19,7 +19,7 @@ const SignUp = ({ isVisible }) => {
   const signUp = (e) => {
     e.preventDefault()
     axios
-      .post(`${process.env.REACT_APP_API_URL}/users`, {
+      .post("https://nikola-task-manager-app.herokuapp.com/users", {
         name: name,
         email: email,
         age: age,
