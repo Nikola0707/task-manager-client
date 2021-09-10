@@ -14,9 +14,11 @@ const SignIn = ({ isVisible }) => {
   const [logginError, setLogginError] = useState(false);
   const [logginErrorMessage, setLogginErrorMessage] = useState("");
 
+  const [pending, setPending] = useState(false);
+
   const signIn = (e) => {
     e.preventDefault();
-
+    setPending(true);
     fetch("https://nikola-task-manager-app.herokuapp.com/users/login", {
       method: "POST",
       headers: {
@@ -34,6 +36,7 @@ const SignIn = ({ isVisible }) => {
         window.location.replace("/dashboard");
         setEmail("");
         setPassword("");
+        setPending("false");
       })
       .catch((e) => {
         setLogginError(true);
@@ -53,10 +56,17 @@ const SignIn = ({ isVisible }) => {
           onClick={() => isVisible(false)}
         />
       </div>
-      <div className="avatar-container">
-        <img src={avatar} alt="avatar" />
-      </div>
+      {pending ? (
+        <div class="lds-circle">
+          <div></div>
+        </div>
+      ) : (
+        <div className="avatar-container">
+          <img src={avatar} alt="avatar" />
+        </div>
+      )}
       <h1>Welcome back!</h1>
+
       <form action="">
         <div className="inputBox">
           <span>
@@ -67,8 +77,8 @@ const SignIn = ({ isVisible }) => {
             placeholder="Email"
             value={email}
             onChange={(e) => {
-              setEmail(e.target.value)
-              setLogginError(false)
+              setEmail(e.target.value);
+              setLogginError(false);
             }}
           />
         </div>
@@ -84,8 +94,8 @@ const SignIn = ({ isVisible }) => {
             placeholder="Password"
             value={password}
             onChange={(e) => {
-              setPassword(e.target.value)
-              setLogginError(false)
+              setPassword(e.target.value);
+              setLogginError(false);
             }}
           />
         </div>
