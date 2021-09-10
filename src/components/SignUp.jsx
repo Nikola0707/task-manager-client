@@ -11,6 +11,7 @@ import avatar from "../assets/user-avatar.png";
 const axios = require("axios");
 
 const SignUp = ({ isVisible }) => {
+  const [errorMessage, setErrorMessage] = useState(false)
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [age, setAge] = useState("")
@@ -28,13 +29,14 @@ const SignUp = ({ isVisible }) => {
       .then((response) => {
         const {token} = response.data
         Cookies.set("token", token)
+        Cookies.set("id", response.data.user._id);
         window.location.replace('/dashboard');
         setName('')
         setEmail('')
         setPassword('')
         setAge('')
       })
-      .catch((e) => console.log(e));
+      .catch((e) => setErrorMessage(true));
   };
 
   return (
@@ -50,9 +52,10 @@ const SignUp = ({ isVisible }) => {
         />
       </div>
       <div className="avatar-container">
+        
         <img src={avatar} alt="avatar" />
       </div>
-      <h1>Welcome!</h1>
+      {errorMessage ? <p>Wrong email or short password (min 7 chars)!</p> : <h1>Welcome!</h1>}
       <form action="">
         <div className="inputBox">
           <span>

@@ -28,7 +28,6 @@ const SignIn = ({ isVisible }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         const { token, user } = data;
         Cookies.set("token", token);
         Cookies.set("id", user._id);
